@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutionException;
  * Classe de configuration d'API Flickr pour le stockage des photos sur le cloud.
  */
 
-@Configuration
+//@Configuration
 public class FlickrConfiguration {
 
     @Value("${flickr.apiKey}")
