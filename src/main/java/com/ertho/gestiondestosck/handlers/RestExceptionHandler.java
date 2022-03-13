@@ -9,18 +9,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-/*
-L' "extends ResponseEntityExceptionHandler", c'est pour utiliser son modele pour la gestion
-    des exceptions
-* L'annotation @RestControllerAdvice, pour eviter de mettre @ResponseBody a chaque methode
-* */
+/**
+ * L' ResponseEntityExceptionHandler", c'est pour utiliser son modele pour la gestion
+ * des exceptions
+ * L'annotation @RestControllerAdvice, pour eviter de mettre @ResponseBody a chaque methode
+ */
+
 
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    /* Lorqu'on leve une Exception dans l'application avec EntityNotFoundException,
-        elle sera catchee par le RestControllerAdvice, et on va aller directement a
-        cette methode et implementee la logique qu'on veut
+    /**
+     *  Lorqu'on leve une Exception dans l'application avec EntityNotFoundException,
+     *  elle sera catchee par le RestControllerAdvice, et on va aller directement a
+     *   cette methode et implementee la logique qu'on veut
      */
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorDto> handlerException(EntityNotFoundException exception, WebRequest webRequest){

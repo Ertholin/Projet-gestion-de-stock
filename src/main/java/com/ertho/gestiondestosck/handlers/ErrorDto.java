@@ -10,6 +10,10 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Objet à renvoyer dès que l'application rencontre une exception
+ */
+
 @Getter
 @Setter
 @AllArgsConstructor

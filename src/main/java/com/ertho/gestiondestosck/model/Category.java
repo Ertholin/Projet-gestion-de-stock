@@ -28,5 +28,4 @@ public class Category extends AbstractEntity{
     @Column(name = "identreprise")
     private Integer idEntreprise;
 
-
 }

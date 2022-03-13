@@ -4,7 +4,7 @@ import com.ertho.gestiondestosck.dto.ArticleDto;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
+
 import java.util.List;
 
 import static com.ertho.gestiondestosck.utils.Constants.APP_ROOT;

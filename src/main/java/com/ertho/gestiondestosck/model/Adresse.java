@@ -27,5 +27,4 @@ public class Adresse implements Serializable {
     @Column(name = "pays")
     private String pays;
 
-
 }
