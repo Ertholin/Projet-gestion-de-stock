@@ -78,7 +78,7 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         }
 
         if(articleErrors.isEmpty()){
-            log.warn("");
+            log.warn("Article ID {} was not found in the DB ");
             throw new InvalidEntityException("Article n'existe pas dans la BD", ErrorCodes.ARTICLE_NOT_FOUND, articleErrors);
         }
 

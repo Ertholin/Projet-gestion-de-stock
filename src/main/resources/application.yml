@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3307/gestionstock?createDatabaseIfNotExist=true&userSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/gestionstock?createDatabaseIfNotExist=true&userSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
     password: ertho
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -16,3 +16,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 server:
   port: 8081
+
+flickr:
+  apiKey: 5a018887ed23d0a34862898d0018580e
+  apiSecret: 130ec45d709bc1f1

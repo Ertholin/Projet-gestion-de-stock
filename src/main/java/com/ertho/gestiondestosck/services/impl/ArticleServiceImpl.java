@@ -32,7 +32,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleDto save(ArticleDto dto) {
-        //Avant de save un article, on doit passer par la validation pour le valider
+        /**
+         * Avant de save un article, on doit passer par la validation pour le valider
+         */
         List<String> errors = ArticleValidator.validate(dto);
         if(!errors.isEmpty()){
             log.error("Article is not valid {}", dto);

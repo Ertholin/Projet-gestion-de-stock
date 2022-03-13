@@ -21,11 +21,13 @@ public class ArticleController implements ArticleApi {
     //        return articleService;
     //    }
 
-    // Constructor Injection
-    @Autowired //Permet d'injecter des instances a chaque fois qu'on trouve cette annotion(Autres: Fileld Injection, Constructor Injection, Getter jection)
-    public ArticleController(
-            ArticleService articleService
-    ){
+    /**
+     * Constructor Injection
+     * Permet d'injecter des instances a chaque fois qu'on trouve cette annotion(Autres: Fileld Injection, Constructor Injection, Getter jection)
+     * @param articleService
+     */
+    @Autowired
+    public ArticleController(ArticleService articleService){
         this.articleService = articleService;
     }
 
