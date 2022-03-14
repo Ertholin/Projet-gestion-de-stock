@@ -4,6 +4,7 @@ spring:
     username: root
     password: ertho
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   ## Specify DBMS
   jpa:
     database: MYSQL
@@ -22,3 +23,7 @@ flickr:
   apiSecret: 130ec45d709bc1f1
   appKey: 72157720836025770-78b21f20cd22b006
   appSecret: f84b2d522cccfa7d
+
+springdoc:
+  api-docs:
+    path=/com.ertho.gestiondestock:
