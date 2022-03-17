@@ -29,7 +29,6 @@ public class ArticleServiceImpl implements ArticleService {
         this.articleRepository = articleRepository;
     }
 
-
     @Override
     public ArticleDto save(ArticleDto dto) {
         /**

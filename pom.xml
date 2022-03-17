@@ -21,10 +21,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-security</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.flickr4java</groupId>
@@ -36,6 +36,12 @@
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.6.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.9.0</version>
 		</dependency>
 
 		<dependency>
@@ -79,27 +85,7 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
-				<groupId>io.openapitools.swagger</groupId>
-				<artifactId>swagger-maven-plugin</artifactId>
-				<configuration>
-					<resourcePackages>
-						<resourcePackage>com.ertho.gestiondestosck.controller</resourcePackage>
-						<resourcePackage>com.ertho.gestiondestosck.controller</resourcePackage>
-					</resourcePackages>
-					<outputDirectory>${basedir}/target/</outputDirectory>
-					<outputFilename>swagger</outputFilename>
-					<outputFormats>JSON,YAML</outputFormats>
-					<prettyPrint>true</prettyPrint>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+
 
 		</plugins>
 	</build>
