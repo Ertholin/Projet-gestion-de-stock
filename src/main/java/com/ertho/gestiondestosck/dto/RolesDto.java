@@ -11,7 +11,7 @@ public class RolesDto {
 
     private Integer id;
     private String roleName;
-    private Utilisateur utilisateur;
+    private UtilisateurDto utilisateur;
 
     public static RolesDto fromEntity(Roles roles){
         if(roles == null){

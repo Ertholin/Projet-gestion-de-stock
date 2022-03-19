@@ -1,13 +1,17 @@
 package com.ertho.gestiondestosck.handlers;
 
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
+import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.Collections;
 
 /**
  * L' ResponseEntityExceptionHandler", c'est pour utiliser son modele pour la gestion
@@ -37,14 +41,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDto, notFound);
     }
 
-    @ExceptionHandler(InvalidEntityException.class)
-    public ResponseEntity<ErrorDto> handlerException(InvalidEntityException exception, WebRequest webRequest){
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorDto> handlerException(BadCredentialsException exception, WebRequest webRequest){
         final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+
         final ErrorDto errorDto = ErrorDto.builder()
-                .code(exception.getErrorCode())
+                .code(ErrorCodes.BAD_CREDENTIALS)
                 .httpCode(badRequest.value())
                 .message(exception.getMessage())
-                .errors(exception.getErrors())
+                .errors(Collections.singletonList("Login et/ou mot de passe incorrecte"))
                 .build();
 
         return new ResponseEntity<>(errorDto, badRequest);
