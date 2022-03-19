@@ -24,5 +24,5 @@ public interface Constants {
 
     String VENTE_ENDPOINT = APP_ROOT + "/ventes";
 
-    String AUTHENTIFICATION_ENDPOINT = APP_ROOT + "/auth";
+    String AUTHENTICATION_ENDPOINT = APP_ROOT + "/auth";
 }

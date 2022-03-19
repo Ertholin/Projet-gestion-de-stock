@@ -1,7 +1,7 @@
 package com.ertho.gestiondestosck.controller;
 
-import com.ertho.gestiondestosck.dto.auth.AuthentificationRequest;
-import com.ertho.gestiondestosck.dto.auth.AuthentificationResponse;
+import com.ertho.gestiondestosck.dto.auth.AuthenticationRequest;
+import com.ertho.gestiondestosck.dto.auth.AuthenticationResponse;
 import com.ertho.gestiondestosck.services.auth.ApplicationUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,20 +13,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.ertho.gestiondestosck.utils.Constants.AUTHENTIFICATION_ENDPOINT;
+import static com.ertho.gestiondestosck.utils.Constants.AUTHENTICATION_ENDPOINT;
 
 
 @RestController
-@RequestMapping(AUTHENTIFICATION_ENDPOINT)
-public class AuthentificationController {
+@RequestMapping(AUTHENTICATION_ENDPOINT)
+public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
     private  ApplicationUserDetailsService userDetailsService;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthentificationResponse> authenticate(@RequestBody AuthentificationRequest request){
+    public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -35,7 +36,9 @@ public class AuthentificationController {
                 )
         );
 
-        return ResponseEntity.ok(AuthentificationResponse.builder().accessToken("ertho_access_token").build());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getLogin());
+
+        return ResponseEntity.ok(AuthenticationResponse.builder().accessToken("erthoo_access_token").build());
     }
 
 }

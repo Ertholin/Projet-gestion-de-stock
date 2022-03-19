@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.ertho.gestiondestosck.utils.Constants.APP_ROOT;
 
+@RestController
 @Tag(name = APP_ROOT + "/categories")
 public interface CategoryApi {
 
