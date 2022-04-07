@@ -1,6 +1,7 @@
 package com.ertho.gestiondestosck.controller.api;
 
 import com.ertho.gestiondestosck.dto.CommandeClientDto;
+import com.ertho.gestiondestosck.model.EtatCommande;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -9,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static com.ertho.gestiondestosck.utils.Constants.APP_ROOT;
@@ -23,6 +25,21 @@ public interface CommandeClientApi {
             @ApiResponse(responseCode = "400", description = "L'objet commande Client n'est pas valide")
     })
     ResponseEntity<CommandeClientDto> save(@RequestBody CommandeClientDto dto);
+
+    @PatchMapping(value = APP_ROOT + "/commandeClients/update/etat/{idCommande}/{etatCommande}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @Operation(summary = "Enregistrer une commande client", description = "Cette méthode permet d'enregisrer ou modifier une commande client")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "L'objet commande Client créé / modifié"),
+//            @ApiResponse(responseCode = "400", description = "L'objet commande Client n'est pas valide")
+//    })
+    ResponseEntity<CommandeClientDto> updateEtatCommande(@PathVariable("idCommande") Integer idCommande, @PathVariable("etatCommande") EtatCommande etatCommande);
+
+    @PatchMapping(value = APP_ROOT + "/commandeClients/update/quantite/{idCommande}/{idLigneCommande}/{quantite}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<CommandeClientDto> updateQuantiteCommandee(@PathVariable("idCommande") Integer idCommande, @PathVariable("idLigneCommande")Integer idLigneCommande, @PathVariable("quantite") BigDecimal quantite);
+
+    @PatchMapping(value = APP_ROOT + "/commandeClients/update/client/{idCommande}/{idClient}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<CommandeClientDto> updateClient(@PathVariable("idCommande") Integer idCommande, @PathVariable("idClient")Integer idClient);
+
 
     @GetMapping(value = APP_ROOT + "/commandeClient/{idCommandeClient}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Rechercher une commande client par ID", description = "Cette méthode permet de rechercher une commande client par son ID")

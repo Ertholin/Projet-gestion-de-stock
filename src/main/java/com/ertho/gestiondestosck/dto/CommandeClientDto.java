@@ -1,6 +1,7 @@
 package com.ertho.gestiondestosck.dto;
 
 import com.ertho.gestiondestosck.model.CommandeClient;
+import com.ertho.gestiondestosck.model.EtatCommande;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ public class CommandeClientDto {
     private String code;
     private Instant dateCommande;
 
-//    private EtatCommande etatCommande;
+    private EtatCommande etatCommande;
 
     private Integer idEntreprise;
     private ClientDto client;
@@ -30,6 +31,7 @@ public class CommandeClientDto {
                 .id(commandeClient.getId())
                 .code(commandeClient.getCode())
                 .dateCommande(commandeClient.getDateCommande())
+                .etatCommande(commandeClient.getEtatCommande())
                 .idEntreprise(commandeClient.getIdEntreprise())
                 .client(ClientDto.fromEntity(commandeClient.getClient()))
                 .build();
@@ -43,10 +45,15 @@ public class CommandeClientDto {
         commandeClient.setId(commandeClientDto.getId());
         commandeClient.setCode(commandeClientDto.getCode());
         commandeClient.setDateCommande(commandeClientDto.getDateCommande());
+        commandeClient.setEtatCommande(commandeClientDto.getEtatCommande());
         commandeClient.setIdEntreprise(commandeClientDto.getIdEntreprise());
         commandeClient.setClient(ClientDto.toEntity(commandeClientDto.getClient()));
 
         return commandeClient;
+    }
+
+    public boolean isCommandeLivree(){
+        return EtatCommande.LIVREE.equals(this.etatCommande);
     }
 
 }
