@@ -40,7 +40,6 @@ public class Utilisateur extends AbstractEntity{
     @JoinColumn(name = "identreprise")
     private Entreprise entreprise;
 
-
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "utilisateur")
     @JsonIgnore
     private List<Roles> roles;
