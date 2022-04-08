@@ -1,11 +1,18 @@
 package com.ertho.gestiondestosck.services.impl;
 
 import com.ertho.gestiondestosck.dto.ArticleDto;
+import com.ertho.gestiondestosck.dto.LigneCommandeClientDto;
+import com.ertho.gestiondestosck.dto.LigneCommandeFournisseurDto;
+import com.ertho.gestiondestosck.dto.LigneVenteDto;
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
 import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
 import com.ertho.gestiondestosck.model.Article;
+import com.ertho.gestiondestosck.model.LigneCommandeFournisseur;
 import com.ertho.gestiondestosck.repository.ArticleRepository;
+import com.ertho.gestiondestosck.repository.LigneCommandeClientRepository;
+import com.ertho.gestiondestosck.repository.LigneCommandeFournisseurRepository;
+import com.ertho.gestiondestosck.repository.LigneVenteRepository;
 import com.ertho.gestiondestosck.services.ArticleService;
 import com.ertho.gestiondestosck.validator.ArticleValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +30,21 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl implements ArticleService {
 
     private ArticleRepository articleRepository;
+    private LigneVenteRepository ligneVenteRepository;
+    private LigneCommandeFournisseurRepository commandeFournisseurRepository;
+    private LigneCommandeClientRepository commandeClientRepository;
 
     @Autowired
-    public ArticleServiceImpl(ArticleRepository articleRepository){
+    public ArticleServiceImpl(
+            ArticleRepository articleRepository,
+            LigneVenteRepository ligneVenteRepository,
+            LigneCommandeFournisseurRepository commandeFournisseurRepository,
+            LigneCommandeClientRepository commandeClientRepository
+    ){
         this.articleRepository = articleRepository;
+        this.ligneVenteRepository = ligneVenteRepository;
+        this.commandeClientRepository = commandeClientRepository;
+        this.commandeFournisseurRepository = commandeFournisseurRepository;
     }
 
     @Override
@@ -78,6 +96,35 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleDto> findAll() {
         return articleRepository.findAll().stream()
+                .map(ArticleDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LigneVenteDto> findHistoriqueVentes(Integer idArticle) {
+        return ligneVenteRepository.findAllByArticleId(idArticle).stream()
+                .map(LigneVenteDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(Integer idArticle) {
+        return commandeFournisseurRepository.findAllByArticleId(idArticle).stream()
+                .map(LigneCommandeFournisseurDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<LigneCommandeClientDto> findHistoriqueCommandeClient(Integer idArticle) {
+        return commandeClientRepository.findAllByArticleId(idArticle).stream()
+                .map(LigneCommandeClientDto::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<ArticleDto> findAllArticleByIdCategory(Integer idCategory) {
+        return articleRepository.findAllByCategoryId(idCategory).stream()
                 .map(ArticleDto::fromEntity)
                 .collect(Collectors.toList());
     }

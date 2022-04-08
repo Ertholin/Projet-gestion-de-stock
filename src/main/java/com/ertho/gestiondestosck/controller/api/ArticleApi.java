@@ -1,6 +1,9 @@
 package com.ertho.gestiondestosck.controller.api;
 
 import com.ertho.gestiondestosck.dto.ArticleDto;
+import com.ertho.gestiondestosck.dto.LigneCommandeClientDto;
+import com.ertho.gestiondestosck.dto.LigneCommandeFournisseurDto;
+import com.ertho.gestiondestosck.dto.LigneVenteDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -44,6 +47,20 @@ public interface ArticleApi {
             @ApiResponse(responseCode = "200", description = "La liste des articles / Une liste vide")
     })
     List<ArticleDto> findAll();
+
+
+    @GetMapping(value = APP_ROOT + "/articles/historique/vente/{idArticle}", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<LigneVenteDto> findHistoriqueVentes(@PathVariable("idArticle") Integer idArticle);
+
+    @GetMapping(value = APP_ROOT + "/articles/historique/commandeclient/{idArticle}", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<LigneCommandeClientDto> findHistoriqueCommandeClient(@PathVariable("idArticle") Integer idArticle);
+
+    @GetMapping(value = APP_ROOT + "/articles/historique/commandefournisseur/{idArticle}", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<LigneCommandeFournisseurDto> findHistoriqueCommandeFournisseur(@PathVariable("idArticle") Integer idArticle);
+
+    @GetMapping(value = APP_ROOT + "/articles/filter/category/{idCategory}", produces = MediaType.APPLICATION_JSON_VALUE)
+    List<ArticleDto> findAllArticleByIdCategory(@PathVariable("idCategory")Integer idCategory);
+
 
     @DeleteMapping(value = APP_ROOT + "/articles/delete/{idArticle}")
     @Operation(summary = "Supprimer un article", description = "Cette méthode permet de supprimer un article par ID")
