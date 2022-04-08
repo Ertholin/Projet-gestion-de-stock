@@ -14,12 +14,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-public class CommandeClientControllery implements CommandeClientApi {
+public class CommandeClientController implements CommandeClientApi {
 
     @Autowired
     private CommandeClientService commandeClientService;
 
-    public CommandeClientControllery(CommandeClientService commandeClientService) {
+    public CommandeClientController(CommandeClientService commandeClientService) {
         this.commandeClientService = commandeClientService;
     }
 

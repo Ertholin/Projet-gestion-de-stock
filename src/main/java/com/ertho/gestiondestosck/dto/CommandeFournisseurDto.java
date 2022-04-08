@@ -2,6 +2,7 @@ package com.ertho.gestiondestosck.dto;
 
 
 import com.ertho.gestiondestosck.model.CommandeFournisseur;
+import com.ertho.gestiondestosck.model.EtatCommande;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ public class CommandeFournisseurDto {
     private String code;
     private Instant dateCommande;
 
-//    private EtatCommande etatCommande;
+    private EtatCommande etatCommande;
 
     private Integer idEntreprise;
     private FournisseurDto fournisseur;
@@ -30,6 +31,7 @@ public class CommandeFournisseurDto {
                 .id(commandeFournisseur.getId())
                 .code(commandeFournisseur.getCode())
                 .dateCommande(commandeFournisseur.getDateCommande())
+                .etatCommande(commandeFournisseur.getEtatCommande())
                 .idEntreprise(commandeFournisseur.getIdEntreprise())
                 .fournisseur(FournisseurDto.fromEntity(commandeFournisseur.getFournisseur()))
                 .build();
@@ -43,10 +45,14 @@ public class CommandeFournisseurDto {
         commandeFournisseur.setId(commandeFournisseurDto.getId());
         commandeFournisseur.setCode(commandeFournisseurDto.getCode());
         commandeFournisseur.setDateCommande(commandeFournisseurDto.getDateCommande());
+        commandeFournisseur.setEtatCommande(commandeFournisseur.getEtatCommande());
         commandeFournisseur.setIdEntreprise(commandeFournisseurDto.getIdEntreprise());
         commandeFournisseur.setFournisseur(FournisseurDto.toEntity(commandeFournisseurDto.getFournisseur()));
-
         return commandeFournisseur;
+    }
+
+    public boolean isCommandeLivree(){
+        return EtatCommande.LIVREE.equals(this.etatCommande);
     }
 
 

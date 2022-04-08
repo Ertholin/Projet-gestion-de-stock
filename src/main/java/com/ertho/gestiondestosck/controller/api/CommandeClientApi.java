@@ -28,11 +28,6 @@ public interface CommandeClientApi {
     ResponseEntity<CommandeClientDto> save(@RequestBody CommandeClientDto dto);
 
     @PatchMapping(value = APP_ROOT + "/commandeClients/update/etat/{idCommande}/{etatCommande}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Operation(summary = "Enregistrer une commande client", description = "Cette méthode permet d'enregisrer ou modifier une commande client")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "L'objet commande Client créé / modifié"),
-//            @ApiResponse(responseCode = "400", description = "L'objet commande Client n'est pas valide")
-//    })
     ResponseEntity<CommandeClientDto> updateEtatCommande(@PathVariable("idCommande") Integer idCommande, @PathVariable("etatCommande") EtatCommande etatCommande);
 
     @PatchMapping(value = APP_ROOT + "/commandeClients/update/quantite/{idCommande}/{idLigneCommande}/{quantite}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
