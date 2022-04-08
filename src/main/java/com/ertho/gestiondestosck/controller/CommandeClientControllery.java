@@ -2,6 +2,7 @@ package com.ertho.gestiondestosck.controller;
 
 import com.ertho.gestiondestosck.controller.api.CommandeClientApi;
 import com.ertho.gestiondestosck.dto.CommandeClientDto;
+import com.ertho.gestiondestosck.dto.LigneCommandeClientDto;
 import com.ertho.gestiondestosck.model.EtatCommande;
 import com.ertho.gestiondestosck.services.CommandeClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,16 @@ public class CommandeClientControllery implements CommandeClientApi {
     }
 
     @Override
+    public ResponseEntity<CommandeClientDto> updateArticle(Integer idCommande, Integer idLigneCommande, Integer idArticle) {
+        return ResponseEntity.status(HttpStatus.OK).body(commandeClientService.updateArticle(idCommande, idLigneCommande, idArticle));
+    }
+
+    @Override
+    public ResponseEntity<CommandeClientDto> deleteArticle(Integer idCommande, Integer idLigneCommande) {
+        return ResponseEntity.status(HttpStatus.OK).body(commandeClientService.deleteArticle(idCommande, idLigneCommande));
+    }
+
+    @Override
     public ResponseEntity<CommandeClientDto> findById(Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(commandeClientService.findById(id));
     }
@@ -56,6 +67,11 @@ public class CommandeClientControllery implements CommandeClientApi {
     @Override
     public ResponseEntity<List<CommandeClientDto>> findAll() {
         return ResponseEntity.status(HttpStatus.OK).body(commandeClientService.findAll());
+    }
+
+    @Override
+    public ResponseEntity<List<LigneCommandeClientDto>> findAllLignesCommandesClientByCommandeClientId(Integer idCommande) {
+        return ResponseEntity.status(HttpStatus.OK).body(commandeClientService.findAllLignesCommandesClientByCommandeClientId(idCommande));
     }
 
     @Override

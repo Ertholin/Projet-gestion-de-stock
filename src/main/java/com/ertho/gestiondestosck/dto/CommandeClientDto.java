@@ -2,6 +2,7 @@ package com.ertho.gestiondestosck.dto;
 
 import com.ertho.gestiondestosck.model.CommandeClient;
 import com.ertho.gestiondestosck.model.EtatCommande;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,6 +22,7 @@ public class CommandeClientDto {
     private Integer idEntreprise;
     private ClientDto client;
 
+    @JsonIgnore
     private List<LigneCommandeClientDto> ligneCommandeClients;
 
     public static CommandeClientDto fromEntity(CommandeClient commandeClient){

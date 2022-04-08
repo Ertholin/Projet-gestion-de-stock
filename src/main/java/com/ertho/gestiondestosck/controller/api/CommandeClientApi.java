@@ -1,6 +1,7 @@
 package com.ertho.gestiondestosck.controller.api;
 
 import com.ertho.gestiondestosck.dto.CommandeClientDto;
+import com.ertho.gestiondestosck.dto.LigneCommandeClientDto;
 import com.ertho.gestiondestosck.model.EtatCommande;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -40,6 +41,11 @@ public interface CommandeClientApi {
     @PatchMapping(value = APP_ROOT + "/commandeClients/update/client/{idCommande}/{idClient}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<CommandeClientDto> updateClient(@PathVariable("idCommande") Integer idCommande, @PathVariable("idClient")Integer idClient);
 
+    @PatchMapping(value = APP_ROOT + "/commandeClients/update/article/{idCommande}/{idLigneCommande}/{idArticle}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<CommandeClientDto> updateArticle(@PathVariable("idCommande")Integer idCommande, @PathVariable("idLigneCommande")Integer idLigneCommande, @PathVariable("idArticle") Integer idArticle);
+
+    @DeleteMapping(value = APP_ROOT + "/commandeClients/delete/article/{idCommande}/{idLigneCommande}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<CommandeClientDto> deleteArticle(@PathVariable("idCommande")Integer idCommande, @PathVariable("idLigneCommande")Integer idLigneCommande);
 
     @GetMapping(value = APP_ROOT + "/commandeClient/{idCommandeClient}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Rechercher une commande client par ID", description = "Cette méthode permet de rechercher une commande client par son ID")
@@ -65,12 +71,15 @@ public interface CommandeClientApi {
     })
     ResponseEntity<List<CommandeClientDto>> findAll();
 
+    @GetMapping(value = APP_ROOT + "/commandeClients/lignesCommande/{idCommande}", produces = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<List<LigneCommandeClientDto>> findAllLignesCommandesClientByCommandeClientId(@PathVariable("idCommande") Integer idCommande);
+
 
     @DeleteMapping(value = APP_ROOT + "/commandeClient/delete/{idCommandeClient}")
     @Operation(summary = "Supprimer une commande client", description = "Cette méthode permet de supprimer une commande client par ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "La commande client a été supprimée dans la base de données")
     })
-    ResponseEntity delete(@PathVariable("idCommandeClient") Integer id);
+    ResponseEntity<Void> delete(@PathVariable("idCommandeClient") Integer id);
 
 }

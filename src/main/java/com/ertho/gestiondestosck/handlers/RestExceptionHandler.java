@@ -3,6 +3,7 @@ package com.ertho.gestiondestosck.handlers;
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
 import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
+import com.ertho.gestiondestosck.exception.InvalidOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -40,8 +41,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(errorDto, notFound);
     }
+    
 
-    //TODO Handler InvalidOperationException
+    @ExceptionHandler(InvalidOperationException.class)
+    public ResponseEntity<ErrorDto> handlerException(InvalidOperationException exception, WebRequest webRequest){
+
+        final HttpStatus notFound = HttpStatus.BAD_REQUEST;
+        final ErrorDto errorDto = ErrorDto.builder()
+                .code(exception.getErrorCode())
+                .httpCode(notFound.value())
+                .message(exception.getMessage())
+                .build();
+
+        return new ResponseEntity<>(errorDto, notFound);
+    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorDto> handlerException(BadCredentialsException exception, WebRequest webRequest){
