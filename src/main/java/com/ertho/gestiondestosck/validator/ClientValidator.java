@@ -16,6 +16,7 @@ public class ClientValidator {
             errors.add("Veuilez renseigner le prenom du client");
             errors.add("Veuilez renseigner le mail du client");
             errors.add("Veuilez renseigner le numero de telephone du client");
+            errors.addAll(AdresseValidator.validate(null));
             return errors;
         }
 
@@ -31,6 +32,7 @@ public class ClientValidator {
         if(!StringUtils.hasLength(dto.getNumTel())){
             errors.add("Veuilez renseigner le numero de telephone du client");
         }
+        errors.addAll(AdresseValidator.validate(dto.getAdresse()));
 
     return errors;
     }

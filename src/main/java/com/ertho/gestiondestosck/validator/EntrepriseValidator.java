@@ -29,7 +29,7 @@ public class EntrepriseValidator {
             errors.add("Veuillez renseigne la descriptipon de l'entreprise");
         }
         if(!StringUtils.hasLength(dto.getCodeFiscal())){
-            errors.add("Veuillez renseigne le code ficale de l'entreprise");
+            errors.add("Veuillez renseigne le code fiscale de l'entreprise");
         }
         if(!StringUtils.hasLength(dto.getEmail())){
             errors.add("Veuillez renseigne l'email de l'entreprise");

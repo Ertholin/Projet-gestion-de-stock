@@ -12,10 +12,11 @@ public class FournisseurValidator {
     public static List<String> validate(FournisseurDto fournisseurDto) {
         List<String> errors = new ArrayList<>();
         if(fournisseurDto == null){
-            errors.add("Veuilez renseigner le nom du client");
-            errors.add("Veuilez renseigner le prenom du client");
-            errors.add("Veuilez renseigner le mail du client");
-            errors.add("Veuilez renseigner le numero de telephone du client");
+            errors.add("Veuilez renseigner le nom du fournisseur");
+            errors.add("Veuilez renseigner le prenom du fournisseur");
+            errors.add("Veuilez renseigner le mail du fournisseur");
+            errors.add("Veuilez renseigner le numero de telephone du fournisseur");
+            errors.addAll(AdresseValidator.validate(null));
             return errors;
         }
 
@@ -31,6 +32,7 @@ public class FournisseurValidator {
         if(!StringUtils.hasLength(fournisseurDto.getNumTel())){
             errors.add("Veuilez renseigner le numero de telephone du fournisseur");
         }
+        errors.addAll(AdresseValidator.validate(fournisseurDto.getAdresse()));
 
         return errors;
     }
