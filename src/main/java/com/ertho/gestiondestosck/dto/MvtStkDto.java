@@ -1,6 +1,7 @@
 package com.ertho.gestiondestosck.dto;
 
 import com.ertho.gestiondestosck.model.MvtStk;
+import com.ertho.gestiondestosck.model.SourceMvtStk;
 import com.ertho.gestiondestosck.model.TypeMvtStk;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +19,7 @@ public class MvtStkDto {
     private ArticleDto article;
     private TypeMvtStk typeMvt;
 
-//    private SourceMvtStk sourceMvt;
+    private SourceMvtStk sourceMvt;
 
     private Integer idEntreprise;
 
@@ -30,6 +31,7 @@ public class MvtStkDto {
                 .id(mvtStk.getId())
                 .dateMvt(mvtStk.getDateMvt())
                 .quantite(mvtStk.getQuantite())
+                .sourceMvt(mvtStk.getSourceMvt())
                 .idEntreprise(mvtStk.getIdEntreprise())
                 .build();
     }
@@ -42,6 +44,7 @@ public class MvtStkDto {
             mvtStk.setId(mvtStkDto.getId());
             mvtStk.setDateMvt(mvtStkDto.getDateMvt());
             mvtStk.setQuantite(mvtStkDto.getQuantite());
+            mvtStk.setSourceMvt(mvtStkDto.getSourceMvt());
             mvtStk.setIdEntreprise(mvtStk.getIdEntreprise());
         return mvtStk;
     }

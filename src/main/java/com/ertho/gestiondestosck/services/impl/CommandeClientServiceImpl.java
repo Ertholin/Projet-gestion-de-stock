@@ -1,9 +1,6 @@
 package com.ertho.gestiondestosck.services.impl;
 
-import com.ertho.gestiondestosck.dto.ArticleDto;
-import com.ertho.gestiondestosck.dto.ClientDto;
-import com.ertho.gestiondestosck.dto.CommandeClientDto;
-import com.ertho.gestiondestosck.dto.LigneCommandeClientDto;
+import com.ertho.gestiondestosck.dto.*;
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
 import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
@@ -14,6 +11,7 @@ import com.ertho.gestiondestosck.repository.ClientRepository;
 import com.ertho.gestiondestosck.repository.CommandeClientRepository;
 import com.ertho.gestiondestosck.repository.LigneCommandeClientRepository;
 import com.ertho.gestiondestosck.services.CommandeClientService;
+import com.ertho.gestiondestosck.services.MvtStkService;
 import com.ertho.gestiondestosck.validator.ArticleValidator;
 import com.ertho.gestiondestosck.validator.CommandeClientValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +21,8 @@ import org.springframework.util.StringUtils;
 
 import java.awt.dnd.InvalidDnDOperationException;
 import java.math.BigDecimal;
+import java.security.PrivateKey;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -36,15 +36,18 @@ public class CommandeClientServiceImpl implements CommandeClientService {
     private LigneCommandeClientRepository ligneCommandeClientRepository;
     private ClientRepository clientRepository;
     private ArticleRepository articleRepository;
+    private MvtStkService mvtStkService;
 
     @Autowired
     public CommandeClientServiceImpl(CommandeClientRepository commandeClientRepository,
                                      LigneCommandeClientRepository ligneCommandeClientRepository,
-                                     ClientRepository clientRepository, ArticleRepository articleRepository){
+                                     ClientRepository clientRepository, ArticleRepository articleRepository,
+                                     MvtStkService mvtStkService){
         this.commandeClientRepository = commandeClientRepository;
         this.ligneCommandeClientRepository = ligneCommandeClientRepository;
         this.clientRepository = clientRepository;
         this.articleRepository = articleRepository;
+        this.mvtStkService = mvtStkService;
     }
 
 
@@ -166,10 +169,12 @@ public class CommandeClientServiceImpl implements CommandeClientService {
         CommandeClientDto commandeClientDto = checkEtatCommande(idCommande);
         commandeClientDto.setEtatCommande(etatCommande);
 
-        return CommandeClientDto.fromEntity
-                (commandeClientRepository.save
-                        (CommandeClientDto.toEntity(commandeClientDto)
-        ));
+        CommandeClient savedCmdClt = commandeClientRepository.save(CommandeClientDto.toEntity(commandeClientDto));
+        if(commandeClientDto.isCommandeLivree()){
+            updateMvtStk(idCommande);
+        }
+
+        return CommandeClientDto.fromEntity(savedCmdClt);
     }
 
 
@@ -311,6 +316,21 @@ public class CommandeClientServiceImpl implements CommandeClientService {
             throw new InvalidOperationException("Impossible de modifier l'etat de la commande avec un " + message+ " ID article",
                     ErrorCodes.COMMANDE_CLIENT_NOT_MODIFIABLE);
         }
+    }
+
+    private void updateMvtStk(Integer idCommande){
+        List<LigneCommandeClient> ligneCommandeClients = ligneCommandeClientRepository.findAllByCommandeClientId(idCommande);
+        ligneCommandeClients.forEach(ligne ->{
+            MvtStkDto mvtStkDto = MvtStkDto.builder()
+                    .article(ArticleDto.fromEntity(ligne.getArticle()))
+                    .dateMvt(Instant.now())
+                    .typeMvt(TypeMvtStk.SORTIE)
+                    .sourceMvt(SourceMvtStk.COMMANDE_CLIENT)
+                    .quantite(ligne.getQuantite())
+                    .idEntreprise(ligne.getIdEntreprise())
+                    .build();
+            mvtStkService.sortieStock(mvtStkDto);
+        });
     }
 
 
