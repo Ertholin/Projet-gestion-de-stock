@@ -4,6 +4,7 @@ import com.ertho.gestiondestosck.dto.*;
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
 import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
+import com.ertho.gestiondestosck.exception.InvalidOperationException;
 import com.ertho.gestiondestosck.model.*;
 import com.ertho.gestiondestosck.repository.ArticleRepository;
 import com.ertho.gestiondestosck.repository.LigneVenteRepository;
@@ -111,6 +112,11 @@ public class VentesServiceImpl implements VentesService {
         if(id == null){
             log.error("Vente ID is null");
             return;
+        }
+        List<LigneVente> ligneVentes = ligneVenteRepository.findAllByVenteId(id);
+        if(!ligneVentes.isEmpty()){
+            throw new InvalidOperationException("Impossible de supprimer une vente en cours ",
+                    ErrorCodes.VENTE_ALREADY_IN_USE);
         }
         ventesRepository.deleteById(id);
     }

@@ -7,8 +7,11 @@ import com.ertho.gestiondestosck.dto.LigneVenteDto;
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
 import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
+import com.ertho.gestiondestosck.exception.InvalidOperationException;
 import com.ertho.gestiondestosck.model.Article;
+import com.ertho.gestiondestosck.model.LigneCommandeClient;
 import com.ertho.gestiondestosck.model.LigneCommandeFournisseur;
+import com.ertho.gestiondestosck.model.LigneVente;
 import com.ertho.gestiondestosck.repository.ArticleRepository;
 import com.ertho.gestiondestosck.repository.LigneCommandeClientRepository;
 import com.ertho.gestiondestosck.repository.LigneCommandeFournisseurRepository;
@@ -135,6 +138,20 @@ public class ArticleServiceImpl implements ArticleService {
             log.error("Article ID is null");
             return;
         }
+        List<LigneCommandeClient> ligneCommandeClients = commandeClientRepository.findAllByArticleId(id);
+        if(!ligneCommandeClients.isEmpty()){
+            throw new InvalidOperationException("Impossible de supprimer un artice deja utilise dans des commandes clients ", ErrorCodes.ARTICLE_ALREADY_IN_USE);
+        }
+        List<LigneCommandeFournisseur> ligneCommandeFournisseurs = commandeFournisseurRepository.findAllByArticleId(id);
+        if(!ligneCommandeFournisseurs.isEmpty()){
+            throw new InvalidOperationException("Impossible de supprimer un artice deja utilise dans des commandes fournisseurs ", ErrorCodes.ARTICLE_ALREADY_IN_USE);
+        }
+
+        List<LigneVente> ligneVentes = ligneVenteRepository.findAllByArticleId(id);
+        if(!ligneVentes.isEmpty()){
+            throw new InvalidOperationException("Impossible de supprimer un artice dejaen vente ", ErrorCodes.ARTICLE_ALREADY_IN_USE);
+        }
+
         articleRepository.deleteById(id);
     }
 }

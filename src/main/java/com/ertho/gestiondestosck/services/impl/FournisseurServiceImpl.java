@@ -4,6 +4,9 @@ import com.ertho.gestiondestosck.dto.FournisseurDto;
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
 import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
+import com.ertho.gestiondestosck.exception.InvalidOperationException;
+import com.ertho.gestiondestosck.model.CommandeFournisseur;
+import com.ertho.gestiondestosck.repository.CommandeFournisseurRepository;
 import com.ertho.gestiondestosck.repository.FournisseurRepository;
 import com.ertho.gestiondestosck.services.FournisseurService;
 import com.ertho.gestiondestosck.validator.FournisseurValidator;
@@ -19,10 +22,12 @@ import java.util.stream.Collectors;
 public class FournisseurServiceImpl implements FournisseurService {
 
     private FournisseurRepository fournisseurRepository;
+    private CommandeFournisseurRepository commandeFournisseurRepository;
 
     @Autowired
-    public FournisseurServiceImpl(FournisseurRepository fournisseurRepository){
+    public FournisseurServiceImpl(FournisseurRepository fournisseurRepository, CommandeFournisseurRepository commandeFournisseurRepository){
         this.fournisseurRepository = fournisseurRepository;
+        this.commandeFournisseurRepository = commandeFournisseurRepository;
     }
 
     @Override
@@ -63,6 +68,11 @@ public class FournisseurServiceImpl implements FournisseurService {
         if(id == null){
             log.error("Fournisseur ID is null");
             return;
+        }
+        List<CommandeFournisseur> commandeFournisseurs = commandeFournisseurRepository.findAllByFournisseurId(id);
+        if(!commandeFournisseurs.isEmpty()){
+            throw new InvalidOperationException("Impossible de supprimer un fournisseur qui deja une commande fournisseur ",
+                    ErrorCodes.FOURNISSEUR_ALREADY_IN_USE);
         }
         fournisseurRepository.deleteById(id);
 

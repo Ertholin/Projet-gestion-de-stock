@@ -1,18 +1,19 @@
 package com.ertho.gestiondestosck.services.impl;
 
-import com.ertho.gestiondestosck.dto.CategoryDto;
 import com.ertho.gestiondestosck.dto.ClientDto;
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
 import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
+import com.ertho.gestiondestosck.exception.InvalidOperationException;
+import com.ertho.gestiondestosck.model.CommandeClient;
 import com.ertho.gestiondestosck.repository.ClientRepository;
+import com.ertho.gestiondestosck.repository.CommandeClientRepository;
 import com.ertho.gestiondestosck.services.ClientService;
 import com.ertho.gestiondestosck.validator.ClientValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,10 +22,12 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl implements ClientService {
 
     private ClientRepository clientRepository;
+    private CommandeClientRepository commandeClientRepository;
 
     @Autowired
-    public ClientServiceImpl(ClientRepository clientRepository){
+    public ClientServiceImpl(ClientRepository clientRepository, CommandeClientRepository commandeClientRepository){
         this.clientRepository = clientRepository;
+        this.commandeClientRepository = commandeClientRepository;
     }
 
     @Override
@@ -65,6 +68,11 @@ public class ClientServiceImpl implements ClientService {
         if(id == null){
             log.error("Client ID is null");
             return;
+        }
+        List<CommandeClient> commandeClients = commandeClientRepository.findAllByClientId(id);
+        if(!commandeClients.isEmpty()){
+            throw new InvalidOperationException("Impossible de supprimer un client qui deja une commande client ",
+                    ErrorCodes.CLIENT_ALREADY_IN_USE);
         }
         clientRepository.deleteById(id);
     }

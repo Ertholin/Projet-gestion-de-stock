@@ -4,6 +4,9 @@ import com.ertho.gestiondestosck.dto.CategoryDto;
 import com.ertho.gestiondestosck.exception.EntityNotFoundException;
 import com.ertho.gestiondestosck.exception.ErrorCodes;
 import com.ertho.gestiondestosck.exception.InvalidEntityException;
+import com.ertho.gestiondestosck.exception.InvalidOperationException;
+import com.ertho.gestiondestosck.model.Article;
+import com.ertho.gestiondestosck.repository.ArticleRepository;
 import com.ertho.gestiondestosck.repository.CategoryRepository;
 import com.ertho.gestiondestosck.services.CategoryService;
 import com.ertho.gestiondestosck.validator.CategoryValidator;
@@ -20,10 +23,12 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private CategoryRepository categoryRepository;
+    private ArticleRepository articleRepository;
 
     @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository){
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ArticleRepository articleRepository){
         this.categoryRepository = categoryRepository;
+        this.articleRepository = articleRepository;
     }
 
     @Override
@@ -78,6 +83,12 @@ public class CategoryServiceImpl implements CategoryService {
         if(id == null){
             log.error("Category ID is null");
             return;
+        }
+        List<Article> articles = articleRepository.findAllByCategoryId(id);
+        if(!articles.isEmpty()){
+            throw new InvalidOperationException("Impossible de supprimer cette categorie qui est deja en vente ",
+                    ErrorCodes.CATEGORY_ALREADY_IN_USE);
+
         }
         categoryRepository.deleteById(id);
 
